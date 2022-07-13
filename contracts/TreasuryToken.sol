@@ -5,7 +5,7 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 contract TreasuryToken is ERC20 {
   address payable public owner;
-  constructor(uint256 initialSupply) ERC20("TreasuryToken", "MOJO1") {
+  constructor(uint256 initialSupply) ERC20("TreasuryToken", "MOCIJOHN") {
     owner = payable(msg.sender);
     _mint(msg.sender, initialSupply * (10 ** decimals()));
   }

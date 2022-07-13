@@ -12,7 +12,12 @@ contract Treasury {
 
     // ERC20 Token addresses on Ropsten network
     address private immutable wethAddress = 0xd0A1E359811322d97991E03f863a0C30C2cF029C;
-    address private immutable usdcAddress = 0xb7a4F3E9097C08dA09517b5aB877F7a917224ede;
+    
+
+    // replace usdc with dai but variable name is usdc
+    //address private immutable usdcAddress = 0xb7a4F3E9097C08dA09517b5aB877F7a917224ede;
+    // DAI
+    address private immutable usdcAddress =0x4F96Fe3b7A6Cf9725f59d353F723c1bDb64CA6Aa;
     IERC20 private weth;
     IERC20 private usdc;
     // keeps track of individuals' treasury WETH balances
