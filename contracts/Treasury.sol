@@ -51,7 +51,6 @@ contract Treasury {
         require(allowance >= _amount, "Check the token allowance");
         weth.transferFrom(msg.sender, address(this), _amount);
     }
-
     // deposit USDC into the treasury
     function depositUsdc(uint _amount) external depositGreaterThanZero(_amount) payable {
         // update depositor's treasury USDC balance
@@ -62,6 +61,17 @@ contract Treasury {
         uint256 allowance = usdc.allowance(msg.sender, address(this));
         require(allowance >= _amount, "Check the token allowance");
         usdc.transferFrom(msg.sender, address(this), _amount);
+    }
+    
+    function withdrawWeth(uint _amount) external payable {
+        require(_amount <= wethBalances[msg.sender] , "Withdraw WETH amount must be less than or equal Balance");
+        wethBalances[msg.sender] -= _amount;
+        weth.transfer(msg.sender, _amount);
+    }
+    function withdrawUsdc(uint _amount) external payable {
+        require(_amount <= usdcBalances[msg.sender] , "Withdraw USDC amount must be less than or equal Balance");
+        usdcBalances[msg.sender] -= _amount;
+        usdc.transfer(msg.sender, _amount);
     }
 
     function getWethBalance() public view returns (uint) {
@@ -75,22 +85,18 @@ contract Treasury {
     function getTokenBalance() public view returns (uint) {
         return token.balanceOf(address(this));
     }
-      function getTokenAddress() public view returns (address) {
-        return address(token);
-    }
-    function getInvestorTokenBalance() public view returns (uint) {
+
+    function getInvestorTokenReward() public view returns (uint) {
         return token.balanceOf(msg.sender);
     }
-
-    function getInvestorWETH(address investor_address ) public view returns(uint){
-        return   wethBalances[investor_address];
+    function getInvestorWETH( ) public view returns(uint){
+        return   wethBalances[msg.sender];
+    }
+    function getInvestorUSDC( ) public view returns(uint){
+        return   usdcBalances[msg.sender];
 
     }
 
-    function getInvestorUSDC(address investor_address ) public view returns(uint){
-        return   usdcBalances[investor_address];
-
-    }
     function getLatestETHPrice() public view returns (int) {
         return ethPriceInUSD;
 
@@ -126,8 +132,6 @@ contract Treasury {
     function distributeShareholderTokens() external returns (bool) {
         //setLatestETHPrice(); 
         // V2 , you need to call setETHPrice manually first before calculate  distributeShareholderTokens
-
-
         uint investorPercent = getInvestorPoolShare();
         require(investorPercent > 0, "The shareholder must have deposited some funds into the Treasury.");
         uint treasuryTokenBalance = getTokenBalance();
@@ -156,28 +160,6 @@ contract Treasury {
       _;
    }
 
-    modifier onlyOwner {
-    	//is the message sender owner of the contract?
-        require(msg.sender == owner);
-        
-        _;
-    }
-
-    function withdraw() payable onlyOwner public {
-    
-    	// If you are using version eight (v0.8) of chainlink aggregator interface,
-    // By transfer
-	// you will need to change the code below to
-	// payable(msg.sender).transfer(address(this).balance);
-    payable(msg.sender).transfer(address(this).balance);
-
-      // By Call
-        // (bool success, ) = (msg.sender).call{value: prizeAmount}("");
-        // uint256 balance = address(this).balance;
-        // (bool success, ) = (msg.sender).call{value: balance}("transfered financier");
-        // require(success, "Failed to withdraw money from contract.");
-
-    }
 
     receive() external payable {}
 }
