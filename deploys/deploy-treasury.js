@@ -8,7 +8,7 @@ async function main() {
   await treasury.deployed();
 
   console.log("Treasury deployed kovan testnet to:", treasury.address);
-
+  
 
 }
 
