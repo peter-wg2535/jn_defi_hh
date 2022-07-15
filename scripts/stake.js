@@ -10,7 +10,7 @@ async function main() {
   const daiTokenAbi = [{ "inputs": [{ "internalType": "uint256", "name": "chainId_", "type": "uint256" }], "payable": false, "stateMutability": "nonpayable", "type": "constructor" }, { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "src", "type": "address" }, { "indexed": true, "internalType": "address", "name": "guy", "type": "address" }, { "indexed": false, "internalType": "uint256", "name": "wad", "type": "uint256" }], "name": "Approval", "type": "event" }, { "anonymous": true, "inputs": [{ "indexed": true, "internalType": "bytes4", "name": "sig", "type": "bytes4" }, { "indexed": true, "internalType": "address", "name": "usr", "type": "address" }, { "indexed": true, "internalType": "bytes32", "name": "arg1", "type": "bytes32" }, { "indexed": true, "internalType": "bytes32", "name": "arg2", "type": "bytes32" }, { "indexed": false, "internalType": "bytes", "name": "data", "type": "bytes" }], "name": "LogNote", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "internalType": "address", "name": "src", "type": "address" }, { "indexed": true, "internalType": "address", "name": "dst", "type": "address" }, { "indexed": false, "internalType": "uint256", "name": "wad", "type": "uint256" }], "name": "Transfer", "type": "event" }, { "constant": true, "inputs": [], "name": "DOMAIN_SEPARATOR", "outputs": [{ "internalType": "bytes32", "name": "", "type": "bytes32" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [], "name": "PERMIT_TYPEHASH", "outputs": [{ "internalType": "bytes32", "name": "", "type": "bytes32" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [{ "internalType": "address", "name": "", "type": "address" }, { "internalType": "address", "name": "", "type": "address" }], "name": "allowance", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [{ "internalType": "address", "name": "usr", "type": "address" }, { "internalType": "uint256", "name": "wad", "type": "uint256" }], "name": "approve", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": true, "inputs": [{ "internalType": "address", "name": "", "type": "address" }], "name": "balanceOf", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [{ "internalType": "address", "name": "usr", "type": "address" }, { "internalType": "uint256", "name": "wad", "type": "uint256" }], "name": "burn", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": true, "inputs": [], "name": "decimals", "outputs": [{ "internalType": "uint8", "name": "", "type": "uint8" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [{ "internalType": "address", "name": "guy", "type": "address" }], "name": "deny", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": false, "inputs": [{ "internalType": "address", "name": "usr", "type": "address" }, { "internalType": "uint256", "name": "wad", "type": "uint256" }], "name": "mint", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": false, "inputs": [{ "internalType": "address", "name": "src", "type": "address" }, { "internalType": "address", "name": "dst", "type": "address" }, { "internalType": "uint256", "name": "wad", "type": "uint256" }], "name": "move", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": true, "inputs": [], "name": "name", "outputs": [{ "internalType": "string", "name": "", "type": "string" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [{ "internalType": "address", "name": "", "type": "address" }], "name": "nonces", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [{ "internalType": "address", "name": "holder", "type": "address" }, { "internalType": "address", "name": "spender", "type": "address" }, { "internalType": "uint256", "name": "nonce", "type": "uint256" }, { "internalType": "uint256", "name": "expiry", "type": "uint256" }, { "internalType": "bool", "name": "allowed", "type": "bool" }, { "internalType": "uint8", "name": "v", "type": "uint8" }, { "internalType": "bytes32", "name": "r", "type": "bytes32" }, { "internalType": "bytes32", "name": "s", "type": "bytes32" }], "name": "permit", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": false, "inputs": [{ "internalType": "address", "name": "usr", "type": "address" }, { "internalType": "uint256", "name": "wad", "type": "uint256" }], "name": "pull", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": false, "inputs": [{ "internalType": "address", "name": "usr", "type": "address" }, { "internalType": "uint256", "name": "wad", "type": "uint256" }], "name": "push", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": false, "inputs": [{ "internalType": "address", "name": "guy", "type": "address" }], "name": "rely", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": true, "inputs": [], "name": "symbol", "outputs": [{ "internalType": "string", "name": "", "type": "string" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [], "name": "totalSupply", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [{ "internalType": "address", "name": "dst", "type": "address" }, { "internalType": "uint256", "name": "wad", "type": "uint256" }], "name": "transfer", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": false, "inputs": [{ "internalType": "address", "name": "src", "type": "address" }, { "internalType": "address", "name": "dst", "type": "address" }, { "internalType": "uint256", "name": "wad", "type": "uint256" }], "name": "transferFrom", "outputs": [{ "internalType": "bool", "name": "", "type": "bool" }], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": true, "inputs": [], "name": "version", "outputs": [{ "internalType": "string", "name": "", "type": "string" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [{ "internalType": "address", "name": "", "type": "address" }], "name": "wards", "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }], "payable": false, "stateMutability": "view", "type": "function" }]
 
   const provider = new ethers.providers.InfuraProvider("kovan", process.env.INFURA_KOVAN_ID)
-  const signer = new ethers.Wallet(process.env.PRIVATE_KEY2, provider)
+  const signer = new ethers.Wallet(process.env.PRIVATE_KEY, provider)
   console.log("Wallet " + signer.address + ": sign status is " + signer._isSigner)
 
   const x_treasury = new ethers.Contract(process.env.TREASURY_KOVAN_CONTRACT_ADDRESS, abi, signer)
@@ -18,7 +18,7 @@ async function main() {
   const x_dai = new ethers.Contract(process.env.DAI_KOVAN_ADDRESS, daiTokenAbi, signer)
 
   const action = 1  // 1=statke 2=unstake 
-  const token_symbol = 'weth'  // weth and dai
+  const token_symbol = 'dai'  // weth and dai
   let amount_x = 0
   let amountXYZ = 0
   if (token_symbol == 'weth') {
@@ -27,35 +27,43 @@ async function main() {
   else if (token_symbol == 'dai') {
     amount_x = 100
   }
-  amountXYZ= ethers.utils.parseEther(amount_x.toString())
+  amountXYZ = ethers.utils.parseEther(amount_x.toString())
 
   try {
     console.log("=================Before Transaction=========================")
     await ShowBalance()
 
     // if (action==1){
-    console.log("Approve and Deposite " + token_symbol + " = "+amountXYZ)
+    console.log("Approve and Deposite " + token_symbol + " = " + amountXYZ)
     // //const txDeposite=await x_treasury.depositWeth(amountXYZ, { gasLimit: 500000})
     let txDeposite
     let txApprove
-    // if (token_symbol == 'weth') {
-        txApprove = await x_weth.approve(process.env.TREASURY_KOVAN_CONTRACT_ADDRESS, amountXYZ)
-        await txApprove.wait()
-        console.log("==================Approved Transaction================")
-        
-        txDeposite = await x_treasury.depositWeth(amountXYZ)
-        await txDeposite.wait()
-        console.log("==================Deposited Transaction================")
-    // }
-    // else if (token_symbol == 'dai') {
-    //   txApprove = await x_dai.approve(process.env.TREASURY_KOVAN_CONTRACT_ADDRESS, amountXYZ)
-    
-    //   txDeposite = await x_treasury.depositUsdc(amountXYZ)
-    // }
-    // console.log("==================Approve Transaction================")
-   // console.log(txApprove)
-    // console.log("==================Deposit Transaction================")
-    //console.log(txDeposite)
+    if (token_symbol == 'weth') {
+      txApprove = await x_weth.approve(process.env.TREASURY_KOVAN_CONTRACT_ADDRESS, amountXYZ)
+      await txApprove.wait()
+      // console.log(txApprove)
+      console.log("==================Approved Transaction================")
+
+      txDeposite = await x_treasury.depositWeth(amountXYZ)
+      await txDeposite.wait()
+      // const txDeposite_Receipt = await txDeposite.wait()
+      // console.log(txDeposite_Receipt)
+      console.log("==================Deposited Transaction================")
+
+    }
+    else if (token_symbol == 'dai') {
+      txApprove = await x_dai.approve(process.env.TREASURY_KOVAN_CONTRACT_ADDRESS, amountXYZ)
+      await txApprove.wait()
+
+      console.log("==================Approved Transaction================")
+      txDeposite = await x_treasury.depositUsdc(amountXYZ)
+      console.log(txDeposite)
+
+      const txDeposite_Receipt = await txDeposite.wait()
+      console.log(txDeposite_Receipt)
+      console.log("==================Deposited Transaction================")
+    }
+
 
     // const txDeposite_Receipt = await txDeposite.wait()
     // console.log("==================Deposit Receipt================")
@@ -65,13 +73,13 @@ async function main() {
     // }
     // else    if (action==2){
 
-      // console.log("Withdrawing")
-      //const tx=await x_treasury.withdrawWeth(amountXYZ)
-      // const tx=await x_treasury.withdrawUsdc(amountXYZ)
-      // console.log(tx)
-      // const tx_Receipt= await tx.wait()
-      // console.log(tx_Receipt)   
-      // console.log("Withdrawed...")
+    // console.log("Withdrawing")
+    //const tx=await x_treasury.withdrawWeth(amountXYZ)
+    // const tx=await x_treasury.withdrawUsdc(amountXYZ)
+    // console.log(tx)
+    // const tx_Receipt= await tx.wait()
+    // console.log(tx_Receipt)   
+    // console.log("Withdrawed...")
 
     //   }
     console.log("=================Before Transaction=========================")
