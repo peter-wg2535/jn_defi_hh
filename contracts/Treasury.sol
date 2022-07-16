@@ -10,6 +10,10 @@ import "hardhat/console.sol";
 contract Treasury {
     address payable public owner;
 
+    uint256 private no_token_dist_to_holder = 1000 * (10**18);
+    // change by set  to 100000000000000000000 = 100 * (10**18);
+    // total suppoy initialSupply * (10 ** decimals())
+
     address private immutable wethAddress =
         0xd0A1E359811322d97991E03f863a0C30C2cF029C;
     IERC20 private weth;
@@ -27,15 +31,27 @@ contract Treasury {
     int public ethPriceInUSD = 0;
 
     //event  to distribute reward
-    event DistributeReward(
-        address indexed _staker,
-        uint _investorWethBal,
-        uint _investorUsdcBal,
-        uint _investorTokenShare
+    // event DistributeReward(
+    //     address indexed _staker,
+    //     uint _investorWethBal,
+    //     uint _investorUsdcBal,
+    //     uint _investorTokenShare
+    // );
+
+        event DistributeReward(
+        address indexed _xtoken,
+        uint _allWethBal,
+        uint _allDaiBal,
+        uint _allDaiToETHBal,
+        uint _remainingReward,
+        uint256 _distributedReward
+        
     );
 
     // Treasury Token
     IERC20 public token;
+
+    address[] public tokenHolders;
 
     constructor() {
         owner = payable(msg.sender);
@@ -47,6 +63,19 @@ contract Treasury {
         );
     }
 
+    function addNewHolder(address _holder) public {
+        bool isNew = true;
+        for (uint i = 0; i < tokenHolders.length; i++) {
+            if (_holder == tokenHolders[i]) {
+                isNew = false;
+                break;
+            }
+        }
+        if (isNew == true) {
+            tokenHolders.push(_holder);
+        }
+    }
+
     // deposit WETH into the treasury
     function depositWeth(uint _amount)
         external
@@ -55,6 +84,8 @@ contract Treasury {
     {
         // update depositor's treasury WETH balance
         // update state before transfer of funds to prevent reentrancy attacks
+        addNewHolder(msg.sender);
+
         wethBalances[msg.sender] += _amount;
 
         // deposit WETH into treasury
@@ -71,6 +102,8 @@ contract Treasury {
     {
         // update depositor's treasury DAI balance
         // update state before transfer of funds to prevent reentrancy attacks
+        addNewHolder(msg.sender);
+
         usdcBalances[msg.sender] += _amount;
 
         // deposit USDC into treasury
@@ -95,6 +128,10 @@ contract Treasury {
         );
         usdcBalances[msg.sender] -= _amount;
         usdc.transfer(msg.sender, _amount);
+    }
+
+    function listAllTokenHolder() public view returns (address[] memory) {
+        return tokenHolders;
     }
 
     function getWethBalance() public view returns (uint) {
@@ -125,14 +162,20 @@ contract Treasury {
         return ethPriceInUSD;
     }
 
-    function distributeShareholderTokens() external returns (bool) {
-        
+    function distributeShareholderTokens() public onlyOwner {
         setLatestETHPrice();
 
         require(
             ethPriceInUSD > 0,
             "We must have the current Eth price to calculate invetor pool share. PlLease call 'getLatestPrice()'."
         );
+
+        uint treasuryTokenBalance = getTokenBalance();
+        require(
+            treasuryTokenBalance >= no_token_dist_to_holder,
+            "Token reward ran out"
+        );
+
         // 1-Find out Total item in Pool
         // get pool WETH balance
         uint poolWethBal = getWethBalance();
@@ -142,37 +185,40 @@ contract Treasury {
         // add pool weth & dai (ETH val)
         uint poolBalance = poolWethBal + poolUsdcBalToEth;
 
-        // 2-Find out Total item  of investor
-        // get investor WETH balance
-        uint investorWethBal = wethBalances[msg.sender];
-        // get investor DAI balance ..convert to ETH
-        uint investorUsdcBal = usdcBalances[msg.sender] / uint(ethPriceInUSD);
-        // add investor weth & dai (ETH val)
-        uint investorBalance = investorWethBal + investorUsdcBal;
+    
+        //500000 * (10 ** decimals())
 
-        // pool balance / investor balance = percent of total
-        uint investorPercent = (investorBalance * 100) / poolBalance;
+        // 2-Find out Total item  of investor and dist
 
-        if (investorPercent > 0) {
-            uint treasuryTokenBalance = getTokenBalance();
-            uint investorTokenShare = (treasuryTokenBalance * investorPercent) /
-                100;
+        for (uint i = 0; i < tokenHolders.length; i++) {
+            address holder = tokenHolders[i];
+            // get investor WETH balance
+            uint investorWethBal = wethBalances[holder];
+            // get investor DAI balance ..convert to ETH
+            uint investorUsdcBal = usdcBalances[holder] / uint(ethPriceInUSD);
+            // add investor weth & dai (ETH val)
+            uint investorBalance = investorWethBal + investorUsdcBal;
 
-            bool transferSucceeded = token.transfer(
-                msg.sender,
-                investorTokenShare
-            );
+            // pool balance / investor balance = percent of total
+            uint investorPercent = (investorBalance * 100) / poolBalance;
 
-            emit DistributeReward(
-                msg.sender,
-                investorWethBal,
-                investorUsdcBal,
-                investorTokenShare
-            );
+            if (investorPercent > 0) {
+                uint investorTokenShare = (no_token_dist_to_holder *
+                    investorPercent);
 
-            return transferSucceeded;
-        } else {
-            return false;
+                token.transfer(holder, investorTokenShare);
+
+                uint remaining_treasuryTokenBalance = getTokenBalance();
+
+                emit DistributeReward(
+                    address(token),
+                    poolWethBal,
+                    poolUsdcBal,
+                    poolUsdcBalToEth,
+                    remaining_treasuryTokenBalance,
+                    no_token_dist_to_holder
+                );
+            }
         }
     }
 
@@ -190,8 +236,24 @@ contract Treasury {
         ethPriceInUSD = price;
     }
 
+    function getNoTokenDistToHolderEachTime() public view returns (uint256) {
+        return no_token_dist_to_holder;
+    }
+
+    function setNoTokenDistToHolderEachTime(uint256 new_no_token)
+        public
+        onlyOwner
+    {
+        no_token_dist_to_holder = new_no_token;
+    }
+
     modifier depositGreaterThanZero(uint _amount) {
         require(_amount > 0, "Deposit amount must be greater than zero");
+        _;
+    }
+    modifier onlyOwner() {
+        //is the message sender owner of the contract?
+        require(msg.sender == owner);
         _;
     }
 
