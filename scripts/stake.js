@@ -2,9 +2,14 @@ const { ethers } = require("hardhat")
 const treasury_JSON = require("../artifacts/contracts/Treasury.sol/Treasury.json")
 
 async function main() {
-  const abi = treasury_JSON.abi
+  
+  
   const acc=process.env.PRIVATE_KEY2
+  const action = 1 // 1=statke 2=unstake 
+  const token_symbol = 'dai'  // weth and dai
+  const amount_x = 10
 
+    
   //https://kovan.etherscan.io/address/0xd0A1E359811322d97991E03f863a0C30C2cF029C#code
   const wethTokenAbi = [{ "constant": true, "inputs": [], "name": "name", "outputs": [{ "name": "", "type": "string" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [{ "name": "guy", "type": "address" }, { "name": "wad", "type": "uint256" }], "name": "approve", "outputs": [{ "name": "", "type": "bool" }], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": true, "inputs": [], "name": "totalSupply", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [{ "name": "src", "type": "address" }, { "name": "dst", "type": "address" }, { "name": "wad", "type": "uint256" }], "name": "transferFrom", "outputs": [{ "name": "", "type": "bool" }], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": false, "inputs": [{ "name": "wad", "type": "uint256" }], "name": "withdraw", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": true, "inputs": [], "name": "decimals", "outputs": [{ "name": "", "type": "uint8" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [{ "name": "", "type": "address" }], "name": "balanceOf", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [], "name": "symbol", "outputs": [{ "name": "", "type": "string" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [{ "name": "dst", "type": "address" }, { "name": "wad", "type": "uint256" }], "name": "transfer", "outputs": [{ "name": "", "type": "bool" }], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": false, "inputs": [], "name": "deposit", "outputs": [], "payable": true, "stateMutability": "payable", "type": "function" }, { "constant": true, "inputs": [{ "name": "", "type": "address" }, { "name": "", "type": "address" }], "name": "allowance", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "stateMutability": "view", "type": "function" }, { "payable": true, "stateMutability": "payable", "type": "fallback" }, { "anonymous": false, "inputs": [{ "indexed": true, "name": "src", "type": "address" }, { "indexed": true, "name": "guy", "type": "address" }, { "indexed": false, "name": "wad", "type": "uint256" }], "name": "Approval", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "name": "src", "type": "address" }, { "indexed": true, "name": "dst", "type": "address" }, { "indexed": false, "name": "wad", "type": "uint256" }], "name": "Transfer", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "name": "dst", "type": "address" }, { "indexed": false, "name": "wad", "type": "uint256" }], "name": "Deposit", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "name": "src", "type": "address" }, { "indexed": false, "name": "wad", "type": "uint256" }], "name": "Withdrawal", "type": "event" }]
   //https://kovan.etherscan.io/address/0x4f96fe3b7a6cf9725f59d353f723c1bdb64ca6aa#code
@@ -13,22 +18,12 @@ async function main() {
   const provider = new ethers.providers.InfuraProvider("kovan", process.env.INFURA_KOVAN_ID)
   const signer = new ethers.Wallet(acc, provider)
   console.log("Wallet " + signer.address + ": sign status is " + signer._isSigner)
-
+  const abi = treasury_JSON.abi
   const x_treasury = new ethers.Contract(process.env.TREASURY_KOVAN_CONTRACT_ADDRESS, abi, signer)
   const x_weth = new ethers.Contract(process.env.WETH_KOVAN_ADDRESS, wethTokenAbi, signer)
   const x_dai = new ethers.Contract(process.env.DAI_KOVAN_ADDRESS, daiTokenAbi, signer)
 
-  const action = 1 // 1=statke 2=unstake 
-  const token_symbol = 'weth'  // weth and dai
-  let amount_x = 0
-  let amountXYZ = 0
-  if (token_symbol == 'weth') {
-    amount_x = 0.08
-  }
-  else if (token_symbol == 'dai') {
-    amount_x = 10
-  }
-  amountXYZ = ethers.utils.parseEther(amount_x.toString())
+ let  amountXYZ = ethers.utils.parseEther(amount_x.toString())
 
   try {
     console.log("=================Before Transaction=========================")
