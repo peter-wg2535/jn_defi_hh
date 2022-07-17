@@ -1,10 +1,10 @@
 const { ethers} = require("hardhat")
 const  treasury_JSON=require("../artifacts/contracts/Treasury.sol/Treasury.json")
-// const x_api_endpoint=process.env.TREASURY_KOVAN_CONTRACT_ADDRESS
+// const x_api_endpoint=process.env.INFURA_KOVAN_ID
 // const treasury_contract_address=process.env.TREASURY_KOVAN_CONTRACT_ADDRESS
 
-const x_api_endpoint=process.env.RINKEBY_ENDPOINT
-const treasury_contract_address=TREASURY_RINKEBY_CONTRACT_ADDRESS
+const x_api_id=process.env.RINKEBY_ID
+const treasury_contract_address=process.env.TREASURY_RINKEBY_CONTRACT_ADDRESS
 async function main() {
     const abi = treasury_JSON.abi
 
