@@ -10,6 +10,10 @@ module.exports = {
       url: process.env.INFURA_KOVAN_ENDPOINT,
       accounts: [process.env.PRIVATE_KEY],
     },
+    rinkeby: {
+      url: process.env.RINKEBY_ENDPOINT,
+      accounts: [process.env.PRIVATE_KEY],
+    },
   },
   etherscan: {
     apiKey: process.env.ETHERSCAN_API_KEY

@@ -15,6 +15,16 @@ async function main() {
 
     const x_treasury = new ethers.Contract(process.env.TREASURY_KOVAN_CONTRACT_ADDRESS, abi, signer)
 
+
+        // const x_token= await ethers.getContractAt("TreasuryToken",process.env.MOJO1_KOVAN_TOKEN)
+        // let my_xtoken_bal  =  await x_token.balanceOf(signer.address)
+
+          //  console.log("=================Call Chainliknk PriceFeed to set/get ETH for calculation==============")  
+      //  const tx_ETHPrice=await x_treasury.setLatestETHPrice()
+      //  await tx_ETHPrice.wait()
+      //  ethPrice=await x_treasury.getLatestETHPrice()
+      //  console.log("ETH price : "+ethPrice) 
+
     // const listHolder=   await x_treasury.listAllTokenHolder()
     // console.log(listHolder)
     // const pool_info={

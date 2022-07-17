@@ -7,26 +7,26 @@ import "./TreasuryToken.sol";
 
 import "hardhat/console.sol";
 
-contract Treasury {
+contract TreasuryRinkeby {
     address payable public owner;
 
     uint256 private no_token_dist_to_holder = 10 * (10**18);
-    // change by set  to 100000000000000000000 = 100 * (10**18);
     // total suppoy initialSupply * (10 ** decimals())
 
     address private immutable wethAddress =
-        0xd0A1E359811322d97991E03f863a0C30C2cF029C;
+        0xc778417E063141139Fce010982780140Aa0cD5Ab;
     IERC20 private weth;
     mapping(address => uint) public wethBalances; // keeps track of individuals' treasury WETH balances
 
     // Replace usdc with dai but all variables keep using USDC
-    //address private immutable usdcAddress = 0xb7a4F3E9097C08dA09517b5aB877F7a917224ede;  // usdc-kovan
+    //address private immutable usdcAddress = 0xb7a4F3E9097C08dA09517b5aB877F7a917224ede;  // usdc-rinkeby
     address private immutable usdcAddress =
-        0x4F96Fe3b7A6Cf9725f59d353F723c1bDb64CA6Aa; //dai-kovan
+        0x5592EC0cfb4dbc12D3aB100b257153436a1f0FEa; //dai-rinkeby  
+        //0x95b58a6bff3d14b7db2f5cb5f0ad413dc2940658
     IERC20 private usdc;
     mapping(address => uint) public usdcBalances; // keeps track of individuals' treasury USDC balances
 
-    // Network: Kovan ,Aggregator: ETH/USD  ,Address: 0x9326BFA02ADD2366b30bacB125260Af641031331
+    // Network: rinkeby ,Aggregator: ETH/USD 
     AggregatorV3Interface internal priceFeed;
     int public ethPriceInUSD = 0;
 
@@ -59,7 +59,7 @@ contract Treasury {
         usdc = IERC20(usdcAddress);
         token = new TreasuryToken(1000000);
         priceFeed = AggregatorV3Interface(
-            0x9326BFA02ADD2366b30bacB125260Af641031331
+            0x8A753747A1Fa494EC906cE90E9f37563A8AF630e
         );
     }
 
