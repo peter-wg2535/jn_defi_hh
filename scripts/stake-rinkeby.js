@@ -5,9 +5,9 @@ async function main() {
   
   
   const acc=process.env.PRIVATE_KEY
-  const action = 1 // 1=statke 2=unstake 
+  const action = 0 // 1=statke 2=unstake 
   const token_symbol = 'weth'  // weth and dai
-  const amount_x = 0.01
+  const amount_x = 0.02
 
     
   //https://rinkeby.etherscan.io/token/0xc778417E063141139Fce010982780140Aa0cD5Ab
@@ -58,7 +58,7 @@ async function main() {
       console.log("Withdrawed...")
 
     }
-    console.log("=================Before Transaction=========================")
+    console.log("=================After Transaction=========================")
     await ShowBalance()
     
     console.log("List All Holder")
