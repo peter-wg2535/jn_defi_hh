@@ -12,7 +12,7 @@ module.exports = {
     },
     rinkeby: {
       url: process.env.RINKEBY_ENDPOINT,
-      accounts: [process.env.PRIVATE_KEY],
+      accounts: [process.env.PRIVATE_KEY,process.env.PRIVATE_KEY2,process.env.PRIVATE_KEY3],
     },
   },
   etherscan: {

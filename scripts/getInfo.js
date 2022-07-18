@@ -8,6 +8,15 @@ const weth_address = process.env.WETH_RINKEBY_ADDRESS     //process.env.WETH_KOV
 const dai_address = process.env.DAI_RINKEBY_ADDRESS    //process.env.DAI_KOVAN_ADDRESS
 async function main() {
     const abi = treasury_JSON.abi
+    let owner;
+    let addr1;
+    let addr2;
+   // [owner, addr1, addr2] = await ethers.getSigners();
+    // rinkeby: {
+    //   url: process.env.RINKEBY_ENDPOINT,
+    //   accounts: [process.env.PRIVATE_KEY,process.env.PRIVATE_KEY2,process.env.PRIVATE_KEY3],
+    // },
+
 
     //const provider = new ethers.providers.InfuraProvider("kovan", api_id )
     const provider = new ethers.providers.AlchemyProvider('rinkeby', api_id )
@@ -19,9 +28,13 @@ async function main() {
     const signer =new ethers.Wallet(process.env.PRIVATE_KEY, provider)
     console.log("Wallet "+signer.address+": sign status is "+signer._isSigner)
 
+   
+
     const x_treasury = new ethers.Contract(contract_address, abi, signer)
-    const myweth = await x_treasury.wethBalances("0x9130aC7AeB7e74E7C3fc64B315DbD0EcAFe69e63")
+    const myweth = await x_treasury.wethBalances("0x0638B786A735D9a09CA4fA2E82BA06Ae9649ae43")
+    const myDai = await x_treasury.usdcBalances("0x0638B786A735D9a09CA4fA2E82BA06Ae9649ae43")
     console.log(ethers.utils.formatEther(myweth))
+    console.log(ethers.utils.formatEther(myDai))
 
         // const x_token= await ethers.getContractAt("TreasuryToken",process.env.MOJO1_KOVAN_TOKEN)
         // let my_xtoken_bal  =  await x_token.balanceOf(signer.address)

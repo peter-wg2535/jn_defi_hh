@@ -3,6 +3,9 @@ const { ethers } = require("hardhat")
 //const treasury_JSON = require("../artifacts/contracts/TreasuryRinkeby.sol/TreasuryRinkeby.json")
 const treasury_JSON = require("../artifacts/contracts/TreasuryDefi.sol/TreasuryDefi.json")
 
+// acc1 |0.05  20.0
+// acc 2 |0.03   20
+
 async function main() {
 
   const acc = process.env.PRIVATE_KEY2
