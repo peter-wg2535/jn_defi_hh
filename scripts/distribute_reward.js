@@ -1,5 +1,5 @@
 const { ethers} = require("hardhat")
-const  treasury_JSON=require("../artifacts/contracts/TreasuryDefi.sol/TreasuryDefi.json")
+const  treasury_JSON=require("../artifacts/contracts/DualTreasuryDefi.sol/DualTreasuryDefi.json")
 
 // const x_api_endpoint=process.env.INFURA_KOVAN_ID
 // const treasury_contract_address=process.env.TREASURY_KOVAN_CONTRACT_ADDRESS

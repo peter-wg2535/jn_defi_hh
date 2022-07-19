@@ -106,7 +106,7 @@ contract DualTreasuryDefi {
 
         daiBalances[msg.sender] += _amount;
 
-        // deposit USDC into treasury
+        // deposit DAI into treasury
         uint256 allowance = dai.allowance(msg.sender, address(this));
         require(allowance >= _amount, "Check the token allowance");
         dai.transferFrom(msg.sender, address(this), _amount);
@@ -146,16 +146,18 @@ contract DualTreasuryDefi {
         return token.balanceOf(address(this));
     }
 
-    function getInvestorRewardToken() public view returns (uint) {
-        return token.balanceOf(msg.sender);
+    function getInvestorRewardToken(address _holder) public view returns (uint) {
+        return token.balanceOf(_holder);
     }
 
-    function getInvestorWETH() public view returns (uint) {
-        return wethBalances[msg.sender];
+    function getInvestorWETH(address _holder) public view returns (uint) {
+        //return wethBalances[msg.sender];
+        return wethBalances[_holder];
     }
 
-    function getInvestorUSDC() public view returns (uint) {
-        return daiBalances[msg.sender];
+    function getInvestorDAI(address _holder) public view returns (uint) {
+        //return daiBalances[msg.sender];
+        return daiBalances[_holder];
     }
 
     function getLatestETHPrice() public view returns (int) {
@@ -184,8 +186,6 @@ contract DualTreasuryDefi {
         uint poolDaiBalToEth = poolDaiBal / uint(ethPriceInUSD);
         // add pool weth & dai (ETH val)
         uint poolBalance = poolWethBal + poolDaiBalToEth;
-
-        //500000 * (10 ** decimals())
 
         // 2-Find out Total item  of investor and dist
 

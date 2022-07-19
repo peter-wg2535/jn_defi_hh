@@ -2,7 +2,7 @@ const hre = require("hardhat");
 async function main() {
 
   const chain_network='rinkeby'
-  const Treasury = await hre.ethers.getContractFactory("TreasuryDefi");
+  const Treasury = await hre.ethers.getContractFactory("DualTreasuryDefi");
   const treasury = await Treasury.deploy(1000000,10
     ,process.env.WETH_RINKEBY_ADDRESS,process.env.DAI_RINKEBY_ADDRESS
     ,process.env.RINKEBY_ETHUSD_AGG_PRICE_ADDRESS);

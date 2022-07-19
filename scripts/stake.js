@@ -1,28 +1,26 @@
 const { ethers } = require("hardhat")
-//const treasury_JSON = require("../artifacts/contracts/Treasury.sol/Treasury.json")
-//const treasury_JSON = require("../artifacts/contracts/TreasuryRinkeby.sol/TreasuryRinkeby.json")
-const treasury_JSON = require("../artifacts/contracts/TreasuryDefi.sol/TreasuryDefi.json")
+const treasury_JSON = require("../artifacts/contracts/DualTreasuryDefi.sol/DualTreasuryDefi.json")
 
-// acc1 |0.05  20.0
+// acc1 |0.1  20.0
 // acc 2 |0.03   20
 
 async function main() {
-
-  const acc = process.env.PRIVATE_KEY2
+  const chian_name = 'rinkeby'
+  const acc = process.env.PRIVATE_KEY
   const action = 1 // 1=statke 2=unstake 
   const token_symbol = 'dai'  // weth and dai
-  const amount_x = 20
+  const amount_x = 120
 
   const api_id = process.env.RINKEBY_ID //process.env.INFURA_KOVAN_ID  
   const contract_address = process.env.TREASURY_RINKEBY_CONTRACT_ADDRESS //process.env.TREASURY_KOVAN_CONTRACT_ADDRESS
   const weth_address = process.env.WETH_RINKEBY_ADDRESS     //process.env.WETH_KOVAN_ADDRESS
   const dai_address = process.env.DAI_RINKEBY_ADDRESS    //process.env.DAI_KOVAN_ADDRESS
+  let provider
 
-  //const provider = new ethers.providers.InfuraProvider('kovan', api_id)
-  const provider = new ethers.providers.AlchemyProvider('rinkeby', api_id)
+  provider = new ethers.providers.AlchemyProvider(chian_name, api_id)
+  //provider = new ethers.providers.InfuraProvider(chian_name, api_id)
 
   const abi = treasury_JSON.abi
-
   //https://kovan.etherscan.io/address/0xd0A1E359811322d97991E03f863a0C30C2cF029C#code
   //const wethTokenAbi = [{ "constant": true, "inputs": [], "name": "name", "outputs": [{ "name": "", "type": "string" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [{ "name": "guy", "type": "address" }, { "name": "wad", "type": "uint256" }], "name": "approve", "outputs": [{ "name": "", "type": "bool" }], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": true, "inputs": [], "name": "totalSupply", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [{ "name": "src", "type": "address" }, { "name": "dst", "type": "address" }, { "name": "wad", "type": "uint256" }], "name": "transferFrom", "outputs": [{ "name": "", "type": "bool" }], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": false, "inputs": [{ "name": "wad", "type": "uint256" }], "name": "withdraw", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": true, "inputs": [], "name": "decimals", "outputs": [{ "name": "", "type": "uint8" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [{ "name": "", "type": "address" }], "name": "balanceOf", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [], "name": "symbol", "outputs": [{ "name": "", "type": "string" }], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [{ "name": "dst", "type": "address" }, { "name": "wad", "type": "uint256" }], "name": "transfer", "outputs": [{ "name": "", "type": "bool" }], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": false, "inputs": [], "name": "deposit", "outputs": [], "payable": true, "stateMutability": "payable", "type": "function" }, { "constant": true, "inputs": [{ "name": "", "type": "address" }, { "name": "", "type": "address" }], "name": "allowance", "outputs": [{ "name": "", "type": "uint256" }], "payable": false, "stateMutability": "view", "type": "function" }, { "payable": true, "stateMutability": "payable", "type": "fallback" }, { "anonymous": false, "inputs": [{ "indexed": true, "name": "src", "type": "address" }, { "indexed": true, "name": "guy", "type": "address" }, { "indexed": false, "name": "wad", "type": "uint256" }], "name": "Approval", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "name": "src", "type": "address" }, { "indexed": true, "name": "dst", "type": "address" }, { "indexed": false, "name": "wad", "type": "uint256" }], "name": "Transfer", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "name": "dst", "type": "address" }, { "indexed": false, "name": "wad", "type": "uint256" }], "name": "Deposit", "type": "event" }, { "anonymous": false, "inputs": [{ "indexed": true, "name": "src", "type": "address" }, { "indexed": false, "name": "wad", "type": "uint256" }], "name": "Withdrawal", "type": "event" }]  
   //https://rinkeby.etherscan.io/token/0xc778417E063141139Fce010982780140Aa0cD5Ab
@@ -71,7 +69,7 @@ async function main() {
         await txApprove.wait()
 
         console.log("==================Approved Transaction================")
-        txDeposite = await x_treasury.depositUsdc(amountXYZ)
+        txDeposite = await x_treasury.depositDai(amountXYZ)
         //console.log(txDeposite)
 
         const txDeposite_Receipt = await txDeposite.wait()
@@ -86,7 +84,7 @@ async function main() {
       if (token_symbol == 'weth')
         tx = await x_treasury.withdrawWeth(amountXYZ)
       else if (token_symbol == 'dai')
-        tx = await x_treasury.withdrawUsdc(amountXYZ)
+        tx = await x_treasury.withdrawDai(amountXYZ)
       console.log(tx)
       const tx_Receipt = await tx.wait()
       console.log(tx_Receipt)
@@ -117,12 +115,12 @@ async function main() {
     let x_defi = 0
     let all_X_inpool = 0
     if (token_symbol == 'weth') {
-      x_defi = await x_treasury.getInvestorWETH()
+      x_defi = await x_treasury.getInvestorWETH(signer.address)
       all_X_inpool = await x_treasury.getWethBalance()
     }
     else if (token_symbol == 'dai') {
-      x_defi = await x_treasury.getInvestorUSDC()
-      all_X_inpool = await x_treasury.getUsdcBalance()
+      x_defi = await x_treasury.getInvestorDAI(signer.address)
+      all_X_inpool = await x_treasury.getDaiBalance()
     }
     console.log("My " + token_symbol + " in defi : " + ethers.utils.formatEther(x_defi))
     console.log("All of " + token_symbol + " in defi : " + ethers.utils.formatEther(all_X_inpool))

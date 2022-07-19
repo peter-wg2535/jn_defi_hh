@@ -78,7 +78,6 @@ describe("TreasuryToken contract", function () {
 
       // Transfer 100 tokens from owner to addr1.
       await treasuryToken.transfer(addr1.address, 100);
-
       // Transfer another 50 tokens from owner to addr2.
       await treasuryToken.transfer(addr2.address, 50);
 
